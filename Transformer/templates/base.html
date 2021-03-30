@@ -1,0 +1,484 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <style>
+
+
+        nav ul li.inactive {
+            color: white;
+            background: #53868b;
+        }
+
+        @media screen and (max-width: 599px) {
+            .dropbox {
+                margin-left: 20px;
+            }
+            .dropbox h3 {
+                margin-top: 20px;
+                margin-right: 20px;
+                padding: 8px 15px;
+                margin-bottom: 20px;
+                list-style: none;
+                background-color: #53868b;
+                border-radius: 4px;
+                font-size: 24px;
+                color: #333333;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-weight: 500;
+                line-height: 1.1;
+            }
+            select {
+                width: 100%;
+                height: 34px;
+                padding: 6px 12px;
+                font-size: 14px;
+                line-height: 1.428571429;
+                color: #555555;
+                vertical-align: middle;
+                background-color: #ffffff;
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+                -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+                box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+            }
+            label{
+                font-weight: bold;
+            }
+            .button {
+                display: inline-block;
+                padding: 6px 12px;
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 1.428571429;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                cursor: pointer;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -o-user-select: none;
+                user-select: none;
+                background-color: #8b7500;
+                color: white;
+                margin-top: 5px;
+            }
+
+            .button i {
+                position: relative;
+                top: -1px;
+            }
+
+            .fa-search {
+                padding: 1px ;
+                top: 5px;
+            }
+        }
+        
+        @media screen and (min-width: 600px) {
+            .dropbox {
+                margin-left: 275px;
+            }
+            .dropbox h3 {
+                margin-top: 20px;
+                margin-right: 20px;
+                padding: 8px 15px;
+                margin-bottom: 20px;
+                list-style: none;
+                background-color: #53868b;
+                border-radius: 4px;
+                font-size: 24px;
+                color: #333333;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-weight: 500;
+                line-height: 1.1;
+            }
+
+
+            .flex-container {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            .flex-container>div {
+                width: 300px;
+                margin: 10px;
+                text-align: center;
+            }
+            select {
+                width: 100%;
+                height: 34px;
+                padding: 6px 12px;
+                font-size: 14px;
+                line-height: 1.428571429;
+                color: #555555;
+                vertical-align: middle;
+                background-color: #ffffff;
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+                -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+                box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+            }
+            label{
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+            .button {
+                display: inline-block;
+                padding: 6px 12px;
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 1.428571429;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                cursor: pointer;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -o-user-select: none;
+                user-select: none;
+                background-color: #8b7500;
+                color: white;
+                margin-top: 5px;
+            }
+
+            .button i {
+                position: relative;
+                top: -1px;
+            }
+
+            .button:hover {
+                background: #cd9b1d;
+            }
+
+            .fa-search {
+                padding: 1px ;
+                top: 5px;
+            } 
+    }
+
+    @media screen and (min-width: 1920px) {
+        select {
+            margin-left: -50px;
+        }
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        box-sizing: border-box;
+        font-family: "Anton", Helvetica, sans-serif;
+    }
+    
+    @media only screen and (max-width: 600px) {
+        .btn {
+            float: right;
+            margin: 20px 30px 0px 0px;
+            cursor: pointer;
+        }
+        .btn span {
+            font-size: 25px;
+            color: white;
+        }
+        .sidebar.show {
+            position: fixed;
+            width: 600px;
+            height: 100%;
+            background: #53868b;
+            transition: top 0.4s ease;
+        }
+    }
+    
+    .sidebar {
+        position: fixed;
+        width: 250px;
+        height: 100%;
+        left: -250px;
+        background: #53868b;
+        transition: left 0.4s ease;
+        z-index: 1;
+        margin-top: -20px;
+        overflow: visible;
+    }
+    
+    @media only screen and (min-width: 768px) {
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            height: 200%;
+            left: 0px;
+            background: #53868b;
+            transition: left 0.4s ease;
+            z-index: 1;
+            margin-top: -20px;
+            overflow: visible;
+        }
+    
+    }
+    
+    .sidebar.show {
+        left: 0px;
+    }
+    
+    nav ul {
+        background: #53868b;
+        height: 100%;
+        width: 100%;
+        list-style: none;
+    }
+    
+    nav ul li {
+        line-height: 40px;
+        border-top: 0.4px solid white;
+    }
+    
+    nav ul li:last-child {
+        border-bottom: 0px solid white;
+    }
+    
+    nav ul li a {
+        position: relative;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        padding-left: 15px;
+        font-weight: 500;
+        display: block;
+        width: 100%;
+        border-left: 3px solid transparent;
+        height: 40px;
+    }
+    
+    nav ul li.active a {
+        color: white;
+        background: #cd9b1d;
+    }
+    
+    nav ul li a:hover {
+        background: #8b7500;
+    }
+    
+    nav ul ul {
+        position: static;
+    }
+    
+    nav ul ul li {
+        line-height: 40px;
+        border-top: none;
+    }
+    
+    nav ul ul li a {
+        font-size: 14px;
+        color: #fff;
+        padding-left: 30px;
+    }
+    
+    nav ul li.active ul li a {
+        color: #fff;
+        background: #53868b;
+        border-left-color: transparent;
+    }
+    
+    nav ul li.active ul li.sub-active a {
+        color: #fff;
+        background: #8b7500;
+        border-left-color: transparent;
+    }
+    
+    nav ul ul li a:hover {
+        color: white!important;
+        background: #8b7500!important;
+    }
+    
+    nav ul li a span {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        font-size: 22px;
+        transition: transform 0.4s;
+    }
+    
+    
+    
+    .navbar {
+        overflow: hidden;
+        background-color: rgb(0, 0, 0);
+        height: 80px;
+        position: fixed;
+        top: 0;
+        z-index: 2;
+        width: 100%;
+    }
+    
+    .navbar .logo {
+        pointer-events: none;
+        position: static;
+    }
+    
+    .navbar .logo .bsnl {
+        font-size: 20px;
+        position: relative;
+        top: 10px;
+        margin-left: 55px;
+        color: #0267bc;
+    }
+    
+    .navbar .logo img {
+        position: absolute;
+        margin-top: -1px;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+    }
+    
+    .navbar .tsecl {
+        position: relative;
+        margin: 0px 10px 0px 10px;
+        height: 55px;
+        width: 55px;
+        border-radius: 50%;
+    }
+    
+    .navbar a {
+        float: left;
+        font-size: 16px;
+        color: white;
+        text-align: center;
+        margin-top: -20px;
+        padding: 35px 16px;
+        text-decoration: none;
+    }
+    
+    .main {
+        position: relative;
+        margin-top: 100px;
+    }
+    body {
+            background-color: #0f0f0f;
+        }
+    
+    </style>
+
+</head>
+
+<body>
+    <div class="navbar">
+
+        <a href="http://182.18.164.20/transformer" class="logo"><img src="{% static 'images/bsnl.jpg' %}" alt=""> <span class="bsnl"> BSNL </span> </a>
+
+        <div class="btn">
+            <span> <i class="fa fa-bars"></i> </span>
+        </div>
+
+        <div class="left" style="float: right;">
+
+            
+
+            <a href="http://182.18.164.20/transformer"> <img class="tsecl" src="{% static 'images/tsecl_logo.jpg' %}" alt="tsecl_logo"></a>
+
+        </div>
+
+    </div>
+
+    <div class="sideme">
+
+    <nav class="sidebar">
+        <ul>
+
+            {% if 'dashboard' in request.path %}
+
+            <li class="active"><a href="{% url 'dashboard' %}"><i class="fa fa-tachometer-alt"></i> Dashboard</a></li>
+
+            <li>
+                <a href="" class="ai-btn"><i class="fa fa-history"></i> AI <span class="fa fa-caret-down first"></span> </a>
+                <ul class="ai-show">
+                    <li><a href="{% url 'forecasting' %}">Forecasting</a></li>
+                    <li><a href="{% url 'fault' %}">Fault Detection</a></li>
+                    <li><a href="">Data Analysis <span class="fa fa-angle-down first"></span></a></li>
+                    <li><a href="{% url 'dataanalysis1' %}">Heat Map</a></li>
+                    <li><a href="{% url 'dataanalysis2' %}">Graphs</a></li>
+                </ul>
+            </li>
+
+
+            {% else%}
+
+            <li><a href="{% url 'dashboard' %}"><i class="fa fa-tachometer-alt"></i> Dashboard</a></li>
+
+            <li class="active">
+                <a href="" class="ai-btn"><i class="fa fa-history"></i> AI <span class="fa fa-angle-down first"></span> </a>
+
+                {% if 'dataanalysis' in request.path %}
+                <ul class="ai-show">
+                    <li {% if 'forecasting' in request.path %} class="sub-active"   {% endif %} ><a href="{% url 'forecasting' %}">Forecasting</a></li>
+                    <li {% if 'fault' in request.path %} class="sub-active"  {% endif %}><a href="{% url 'fault' %}">Fault Prediction</a></li>
+                    <li class="sub-active"><a href="">Data Analysis <span class="fa fa-angle-down first"></span></a></li>
+                    <li {% if 'dataanalysis1' in request.path %} class="sub-active"  {% endif %} ><a href="{% url 'dataanalysis1' %}">Heat Map</a></li>
+                    <li {% if 'dataanalysis2' in request.path %} class="sub-active"  {% endif %} ><a href="{% url 'dataanalysis2' %}">Graphs</a></li>
+                </ul>
+
+                {%else%}
+
+                <ul class="ai-show">
+                    <li {% if 'forecasting' in request.path %} class="sub-active"   {% endif %} ><a href="{% url 'forecasting' %}">Forecasting</a></li>
+                    <li {% if 'fault' in request.path %} class="sub-active"  {% endif %}><a href="{% url 'fault' %}">Fault Prediction</a></li>
+                    <li><a href="">Data Analysis <span class="fa fa-angle-down first"></span></a></li>
+                    <li {% if 'dataanalysis1' in request.path %} class="sub-active"  {% endif %}><a href="{% url 'dataanalysis1' %}">Heat Map</a></li>
+                  <!--  <li {% if 'dataanalysis2' in request.path %} class="sub-active"  {% endif %} ><a href="{% url 'dataanalysis2' %}">Graphs</a></li>-->
+                </ul>
+            </li>
+
+            {% endif %}            
+            {% endif %}
+
+
+
+        </ul>
+    </nav>
+
+</div>
+
+    <div class="main">
+        
+
+    {% block content%}
+    {% endblock %}
+    
+    </div>
+
+    <script>
+        $('.btn').click(function() {
+            $(this).toggleClass("click");
+            $('.sidebar').toggleClass("show");
+        });
+        $('.ai-btn').click(function() {
+            $('nav ul .ai-show').toggleClass("show1");
+            $('nav ul .first').toggleClass("rotate");
+        });
+        $('nav ul li').click(function() {
+            $(this).addClass("active").siblings().removeClass("active");
+        });
+        $('nav ul ul li').click(function() {
+            $(this).addClass("active").siblings().removeClass("active");
+        });
+    </script>
+
+</body>
+
+</html>

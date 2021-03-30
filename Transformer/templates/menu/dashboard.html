@@ -1,0 +1,12 @@
+{%extends 'base.html'%} 
+{% load static %} 
+{%block content%}
+
+<div class="dropbox">
+    
+    <h1 style="color: white;">Dashboard    Max Power Demand</h1>
+    
+</div>
+
+{{graph|safe}}
+{% endblock %}

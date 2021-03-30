@@ -1,0 +1,177 @@
+{%extends 'base.html'%} 
+{% load static %} 
+{%block content%}
+
+<style>
+  @media only screen and (min-width: 768px) {
+    select {
+      margin-left: -50px;
+    }
+  }
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+    font-size: 13.5px;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  tr:nth-child(odd) {
+    color: #dddddd;
+  }
+  .a{
+    display: flex;
+  }
+  .left{
+    margin-right: 25px;
+    flex:1;
+  }
+  .right{
+    flex:1;
+  }
+
+</style>
+
+<div class="dropbox">
+    <h3>Data Analysis</h3>
+    <form>
+
+        <div class="flex-container">
+            <div>
+                <label for="device" style="float:left;">Select Device:</label><br>
+                <select name="imei" id="imei" style="width: 250px;">
+                    {%if location%}
+                    <option value={{imei}}>{{location}}</option>
+                    {%else%}
+                    <option value="sd">--Select Device--</option>
+                    {%endif%}
+                    {% for i in devices %}
+                    <option value={{i.DeviceImei}}>{{i.location}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label for="package" style="float:left;">Select Category:</label><br>
+                <select name="packettype" id="packettype" style="width: 250px;">
+                    {%if pack%}
+                    <option value={{pack}}>{{pack}}</option>
+                    {%else%}
+                    <option value="pt">--Select Category--</option>
+                    {%endif%}
+                    <option value="Total_Power">Total_Power</option>
+                    <option value="overview">overview</option>
+                </select>
+            </div>
+            
+            <div>
+                <br>
+                <button type="submit" value="Submit" id="abc" onclick="myFunction()" style="float:left;" class="button"><i class="fa fa-search" aria-hidden="true"></i> Submit</button>
+            </div>
+        
+        </div>
+
+    </form>
+    <br><br>
+
+<div class="a">   
+
+  <div class="left">
+    {%if imei and pack%}
+    <span style="padding-left: 75px; font: size 15px; color:white;">IMEI: {{imei}} , Packet Type: {{pack}}</span>
+    {%else%}
+    <img src="{% static 'images/bsnl1.jpeg' %}" alt="" style="padding-left: 100px; " >
+    {%endif%}
+    {{data1|safe}}
+  </div>
+
+  {%if imei and pack%}
+<div class="right"> 
+
+<table>
+  <tr>
+    <th>Correlation Coefficient</th>
+    <th>Meaning</th>
+  </tr>
+  <tr>
+    <td>+1</td>
+    <td>A perfect positive relationship.</td>
+  </tr>
+  <tr>
+    <td>0.8</td>
+    <td>A fairly strong positive relationship</td>
+  </tr>
+  <tr>
+    <td>0.6</td>
+    <td>A moderate positive relationship</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>No relationship. As one value increases, there is no tendency for the other value to change in a specific direction</td>
+  </tr>
+  <tr>
+    <td>nan</td>
+    <td>Not a number</td>
+  </tr>
+
+  <tr>
+    <td>-1</td>
+    <td>A perfect negative relationship</td>
+  </tr>
+  <tr>
+    <td>-0.8</td>
+    <td>A fairly strong negative relationship.This scatterplot displays a fairly strong negative correlation of -0.8</td>
+  </tr>
+  <tr>
+    <td>-0.6</td>
+    <td>A moderate negative relationship</td>
+  </tr>
+ 
+</table>
+</div>
+</div>
+{%endif%}
+
+
+
+<style>
+label {
+color: white;
+}
+</style>
+
+
+<script type="text/javascript">
+    function myFunction(){
+      imei=document.getElementById('imei');
+      pack=document.getElementById('packettype');
+    
+      var imeival = imei.options[imei.selectedIndex].value;
+      var packval = pack.options[pack.selectedIndex].value;
+    
+      if(imeival=="sd" || packval=="pt"){
+        alert("Please Enter all the  fields");
+        var link = document.getElementById("abc");
+        link.setAttribute("href", "/dataanalysis");
+  
+      }
+      else{
+        var link = document.getElementById("abc");
+        link.setAttribute("href", "/dataanalysis?imei="+imeival+"&packettype="+packval);
+  
+      }
+  
+    }
+  
+  </script>
+{% endblock %}

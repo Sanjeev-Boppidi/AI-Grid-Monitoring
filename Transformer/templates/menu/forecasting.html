@@ -1,0 +1,165 @@
+{%extends 'base.html'%} 
+{% load static %} 
+{%block content%}
+<style>
+  label {
+color: white;
+}
+</style>
+<div class="dropbox">
+    <h3>Forecasting</h3>
+    <form>
+
+        <div class="flex-container">
+            <div>
+                <label for="device" style="float:left">Select Location:</label><br>
+                <select name="imei" id="imei" style="width: 250px;float: left;">
+        {%if location%}
+        <option value={{imei}}>{{location}}</option>
+        {%else%}
+        <option value="sd">--Select Location--</option>
+        {%endif%}
+        {% for i in devices %}
+        <option value={{i.DeviceImei}}>{{i.location}}</option>
+        {% endfor %}
+      </select>
+            </div>
+            <div>
+
+                <label for="package" style="float:left">Select Category:</label><br>
+                <select name="packettype" id="packettype" style="width: 250px;float: left;">
+                  {%if pack%}
+                  <option value={{pack}}>{{pack}}</option>
+                  {%else%}
+        <option value="pt">--Select Category--</option>
+        {%endif%}
+      </select>
+            </div>
+            <div>
+                <label for="parameter" style="float:left">Select Parameter:</label><br>
+                <select name="parameter" id="parameter" style="width: 250px;float: left;">
+                  {%if aid%}
+                  <option value={{aid}}>{{aid}}</option>
+                  {%else%}
+        <option value="pr">--Select Parameter--</option>
+        {%endif%}
+      </select>
+    </select>
+  </div>
+  <div>
+      <label for="method" style="float:left">Select Method:</label><br>
+      <select name="method" id="method" style="width: 250px;float: left;">
+        {%if method%}
+        <option value={{method}}>{{method}}</option>
+        {%else%}
+<option value="m">--Select Method--</option>
+
+{%endif%}
+<option value="Smoothing">Smoothing</option>
+<option value="Sarima">Sarima</option>
+</select>
+            </div>
+            <div>
+                <br>
+
+
+                
+                
+            </div>
+
+        </div>
+        <br>
+          <div class="vertical-center">
+            <button type="submit" value="Submit" id="abc" onclick="myFunction()"  class="button"><i class="fa fa-search" aria-hidden="true"></i> Submit</button>
+          </div>
+
+        
+        <br>
+    </form>
+    {%if imei and pack%}
+    <br>
+    {{graph_div2|safe}}
+    {{graph_div1|safe}}
+    {{graph|safe}}
+    {%else%}
+    <br>
+    <img src="{% static 'images/bsnl1.jpeg' %}" alt="" style="padding-left: 150px; " >
+    {%endif%}
+
+   
+
+</div>
+<style>
+  .container { 
+    height: 200px;
+    position: relative;
+    border: 3px solid green; 
+  }
+  
+  .vertical-center {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  </style>
+<script type="text/javascript">
+  function myFunction(){
+    imei=document.getElementById('imei');
+    pack=document.getElementById('packettype');
+    aid=document.getElementById('parameter');
+    var ele = document.getElementsByName('method'); 
+              
+    for(i = 0; i < ele.length; i++) { 
+                  if(ele[i].checked) 
+                  document.getElementById("result").innerHTML
+                          = "Gender: "+ele[i].value; 
+              } 
+    var imeival = imei.options[imei.selectedIndex].value;
+    var packval = pack.options[pack.selectedIndex].value;
+    var aidval = aid.options[aid.selectedIndex].value;
+    if(imeival=="sd" || packval=="pt" || aidval=="pr"||ele=="m"){
+      alert("Please Enter all the  fields");
+      var link = document.getElementById("abc");
+      link.setAttribute("href", "/forecasting");
+
+    }
+    else{
+      var link = document.getElementById("abc");
+      link.setAttribute("href", "/forecasting?imei="+imeival+"&pack="+packval+"&aid="+aidval);
+
+    }
+
+    }
+    
+
+</script>
+
+<script>
+    var subjectObject = {
+      "current_voltage": ["VL1","VL2","VL3","IL1","IL2","IL3","VL12","VL23","VL31"],
+      "overview": ["OTI","ATI"],
+      "Total_Power":["KWH","KW","KVA","KVARH"]
+    }
+    window.onload = function() {
+        var topicSel = document.getElementById("packettype");
+        var chapterSel = document.getElementById("parameter");
+        for (var x in subjectObject) {
+            topicSel.options[topicSel.options.length] = new Option(x, x);
+        }
+        topicSel.onchange = function() {
+        //empty Chapters- and Topics- dropdowns
+        chapterSel.length = 1;
+        //display correct values
+        var z = subjectObject[topicSel.value];
+        for (var i = 0; i < z.length; i++) {
+          chapterSel.options[chapterSel.options.length] = new Option(z[i], z[i]);
+        }
+      }
+    }
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+{% endblock %}

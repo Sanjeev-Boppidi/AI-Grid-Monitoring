@@ -1,0 +1,104 @@
+{%extends 'base.html'%} 
+{% load static %} 
+{%block content%}
+
+
+<style>
+  @media only screen and (min-width: 768px) {
+    select {
+      margin-left: -50px;
+    }
+  }
+
+</style>
+
+<div class="dropbox">
+    <h3>Data Analysis</h3>
+    <form>
+
+        <div class="flex-container">
+            <div>
+                <label for="device" style="float:left;">Select Location:</label><br>
+                <select name="imei" id="imei" style="width: 250px; ">
+                    {%if location%}
+                    <option value={{imei}}>{{location}}</option>
+                    {%else%}
+                    <option value="sd">--Select Location--</option>
+                    {%endif%}
+        {% for i in devices %}
+        <option value={{i.DeviceImei}}>{{i.location}}</option>
+        {% endfor %}
+      </select>
+            </div>
+            <div>
+
+                <label for="package" style="float:left;">Select Category:</label><br>
+                <select name="packettype" id="packettype" style="width: 250px; ">
+                    {%if pack%}
+                  <option value={{pack}}>{{pack}}</option>
+                  {%else%}
+        <option value="pt">--Select Category--</option>
+        {%endif%}
+        <option value="current_voltage">Current and Voltage</option>
+        <option value="overview">Overview</option>
+        <option value="power">Power</option>
+        <option value="powerfactor">Power Factor</option>
+        <option value="Total_Power">Total Power</option>
+
+      </select>
+            </div>
+            <div>
+
+                <br>
+                <button type="submit" value="Submit" id="abc" onclick="myFunction()" style="float:left;" class="button"><i class="fa fa-search" aria-hidden="true"></i> Submit</button>
+            
+            </div>
+        </div>
+
+    </form>
+    <br><br>
+    {%if imei and pack%}
+  
+    <span style="padding-left: 75px; font: size 15px;color: white;">IMEI: {{imei}} , Packet Type: {{pack}}</span>
+    {{graph_div1|safe}}
+    {{graph_div2|safe}}
+    {{graph_div3|safe}}
+    {{graph_div4|safe}}
+    {{graph_div5|safe}}
+    {{graph_div6|safe}}
+    {%else%}
+    <img src="{% static 'images/bsnl1.jpeg' %}" alt="" style="padding-left: 100px; " >
+    {%endif%}
+
+    
+</div>
+<style>
+  label {
+color: white;
+}
+</style>
+
+<script type="text/javascript">
+    function myFunction(){
+      imei=document.getElementById('imei');
+      pack=document.getElementById('packettype');
+    
+      var imeival = imei.options[imei.selectedIndex].value;
+      var packval = pack.options[pack.selectedIndex].value;
+    
+      if(imeival=="sd" || packval=="pt"){
+        alert("Please Enter all the  fields");
+        var link = document.getElementById("abc");
+        link.setAttribute("href", "/dataanalysis");
+  
+      }
+      else{
+        var link = document.getElementById("abc");
+        link.setAttribute("href", "/dataanalysis?imei="+imeival+"&packettype="+packval);
+  
+      }
+  
+    }
+  
+  </script>
+{% endblock %}

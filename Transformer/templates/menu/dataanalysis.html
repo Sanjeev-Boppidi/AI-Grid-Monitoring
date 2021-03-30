@@ -1,0 +1,53 @@
+{%extends 'base.html'%} 
+{% load static %} 
+{%block content%}
+
+<div class="dropbox">
+    <h1>Data Analysis</h1>
+    <form action="#">
+
+        <div class="flex-container">
+            <div>
+                <label for="device" style="float:left;color: white;">Select Location:</label><br>
+                <select name="imei" id="imei" style="width: 250px;">
+        <option value="None">--Select Location--</option>
+        {% for i in devices %}
+        <option value={{i.DeviceImei}}>{{i.location}}</option>
+        {% endfor %}
+      </select>
+            </div>
+            <div>
+
+                <label for="package" style="float:left">Select Category:</label><br>
+                <select name="packettype" id="packettype" style="width: 250px;">
+        <option value="">--Select Category--</option>
+        <option value="Total_Power">Total_Power</option>
+        <option value="overview">overview</option>
+      </select>
+            </div>
+            <div>
+
+                <br>
+                <input type="submit" value="Submit" href="/dataanalysis?imei={{imei}}&pack={{packettype}}" style="float:left">
+            </div>
+        </div>
+
+    </form>
+    {%if imei and pack%}
+    <span style="padding-left: 75px; font: size 15px;">IMEI: {{imei}} , Packet Type: {{pack}}</span>
+    {{graph_d|safe}}
+    {%else%}
+    <br>
+    <img src="{% static 'images/bsnl1.jpeg' %}" alt="" style="padding-left: 100px; " >
+
+    {%endif%}
+
+
+</div>
+
+<style>
+            label {
+        color: white;
+    }
+</style>
+{% endblock %}
