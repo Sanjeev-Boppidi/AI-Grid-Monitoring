@@ -26,7 +26,7 @@ import plotly.figure_factory as ff
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 # Create your views here.
 def fault(request):
-    url="http://182.18.164.20/transformer_api/overview_locations"
+    url="http://182.18.***.20/transformer_api/overview_locations"
     response1=requests.get(url)
     res=response1.json()
     imei=[]
@@ -37,13 +37,13 @@ def fault(request):
     for i in range(len(res)):
         imei.append(res[i]['DeviceImei'])
         loc.append(res[i]['location'])
-        url = "http://182.18.164.20/transformer_api/powerfactor/"+res[i]['DeviceImei']
+        url = "http://182.18.***.20/transformer_api/powerfactor/"+res[i]['DeviceImei']
         user = "admin"
         passwd = "admin@123"
         auth_values = (user, passwd)
         response = requests.get(url, auth=auth_values)
         cv = pd.DataFrame.from_dict(response.json(), orient='columns')
-        url = "http://182.18.164.20/transformer_api/overview/"+res[i]['DeviceImei']
+        url = "http://182.18.***.20/transformer_api/overview/"+res[i]['DeviceImei']
         user = "admin"
         passwd = "admin@123"
         auth_values = (user, passwd)
@@ -166,7 +166,7 @@ def fault1(request):
     imei=request.GET.get('imei')
     pack=request.GET.get('packettype')
     aid=request.GET.get('parameter')
-    url="http://182.18.164.20/transformer_api/overview_locations"
+    url="http://182.18.***.20/transformer_api/overview_locations"
     response1=requests.get(url)
     res=response1.json()
     if(imei!=None and pack!=None and aid!=None and imei!='sd' and pack!='pt' and aid!='pr'):
@@ -174,7 +174,7 @@ def fault1(request):
             if(res[i]['DeviceImei']==imei):
                 location=res[i]['location']
                 break
-        url = "http://182.18.164.20/transformer_api/"+pack+"/"+imei
+        url = "http://182.18.***.20/transformer_api/"+pack+"/"+imei
         user = "admin"
         passwd = "admin@123"
         auth_values = (user, passwd)
@@ -256,7 +256,7 @@ def index(request):
     return render(request,'index.html')
 
 def dashboard(request):
-    url = "http://182.18.164.20/transformer_api/Total_Power/"
+    url = "http://182.18.***.20/transformer_api/Total_Power/"
     user = "admin"
     passwd = "admin@123"
     auth_values = (user, passwd)
@@ -361,7 +361,7 @@ def forecasting(request):
     pack=request.GET.get('packettype')
     aid=request.GET.get('parameter')
     method=request.GET.get('method')
-    url="http://182.18.164.20/transformer_api/overview_locations"
+    url="http://182.18.***.20/transformer_api/overview_locations"
     response1=requests.get(url)
     res=response1.json()
     if(imei!=None and pack!=None and aid!=None and imei!='sd' and pack!='pt' and aid!='pr' and method!='m' and method!=None):
@@ -369,7 +369,7 @@ def forecasting(request):
             if(res[i]['DeviceImei']==imei):
                 location=res[i]['location']
                 break
-        url = "http://182.18.164.20/transformer_api/"+pack+"/"+imei
+        url = "http://182.18.***.20/transformer_api/"+pack+"/"+imei
         user = "admin"
         passwd = "admin@123"
         auth_values = (user, passwd)
@@ -963,7 +963,7 @@ def forecasting(request):
 def dataanalysis1(request): 
     imei=request.GET.get('imei')
     pack=request.GET.get('packettype')
-    url="http://182.18.164.20/transformer_api/overview_locations"
+    url="http://182.18.***.20/transformer_api/overview_locations"
     response1=requests.get(url)
     res=response1.json()
     if(imei!=None and pack!=None  and imei!='sd' and pack!='pt'):
@@ -971,7 +971,7 @@ def dataanalysis1(request):
             if(res[i]['DeviceImei']==imei):
                 location=res[i]['location']
                 break
-        url = "http://182.18.164.20/transformer_api/"+pack+"/"+imei
+        url = "http://182.18.***.20/transformer_api/"+pack+"/"+imei
         user = "admin"
         passwd = "admin@123"
         auth_values = (user, passwd)
@@ -1047,7 +1047,7 @@ def dataanalysis1(request):
 def dataanalysis2(request):
     imei=request.GET.get('imei')
     pack=request.GET.get('packettype')
-    url="http://182.18.164.20/transformer_api/overview_locations"
+    url="http://182.18.***.20/transformer_api/overview_locations"
     response1=requests.get(url)
     res=response1.json()
     
@@ -1056,7 +1056,7 @@ def dataanalysis2(request):
             if(res[i]['DeviceImei']==imei):
                 location=res[i]['location']
                 break
-        url = "http://182.18.164.20/transformer_api/"+pack+"/"+imei
+        url = "http://182.18.***.20/transformer_api/"+pack+"/"+imei
         user = "admin"
         passwd = "admin@123"
         auth_values = (user, passwd)
